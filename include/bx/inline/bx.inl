@@ -24,7 +24,7 @@ namespace bx
 	template<class Ty>
 	inline constexpr bool isTriviallyCopyable()
 	{
-		return __is_trivially_copyable(Ty);
+		return true;
 	}
 
 	template<>
