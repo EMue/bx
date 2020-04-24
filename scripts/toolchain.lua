@@ -61,6 +61,7 @@ function toolchain(_buildDir, _libDir)
 			{ "linux-clang-afl", "Linux (Clang + AFL fuzzer)" },
 			{ "linux-mips-gcc",  "Linux (MIPS, GCC compiler)" },
 			{ "linux-arm-gcc",   "Linux (ARM, GCC compiler)"  },
+			{ "linux-ppc-gcc",   "Linux (PPC, GCC compiler)"  },
 			{ "ios-arm",         "iOS - ARM"                  },
 			{ "ios-arm64",       "iOS - ARM64"                },
 			{ "ios-simulator",   "iOS - Simulator"            },
@@ -330,6 +331,9 @@ function toolchain(_buildDir, _libDir)
 
 		elseif "linux-arm-gcc" == _OPTIONS["gcc"] then
 			location (path.join(_buildDir, "projects", _ACTION .. "-linux-arm-gcc"))
+
+		elseif "linux-ppc-gcc" == _OPTIONS["gcc"] then
+			location (path.join(_buildDir, "projects", _ACTION .. "-linux-ppc-gcc"))
 
 		elseif "linux-steamlink" == _OPTIONS["gcc"] then
 			if not os.getenv("MARVELL_SDK_PATH") then
@@ -805,6 +809,22 @@ function toolchain(_buildDir, _libDir)
 		targetdir (path.join(_buildDir, "linux32_arm_gcc/bin"))
 		objdir (path.join(_buildDir, "linux32_arm_gcc/obj"))
 		libdirs { path.join(_libDir, "lib/linux32_arm_gcc") }
+		buildoptions {
+			"-Wunused-value",
+			"-Wundef",
+		}
+		links {
+			"rt",
+			"dl",
+		}
+		linkoptions {
+			"-Wl,--gc-sections",
+		}
+
+	configuration { "linux-ppc-gcc" }
+		targetdir (path.join(_buildDir, "linux32_ppc_gcc/bin"))
+		objdir (path.join(_buildDir, "linux32_ppc_gcc/obj"))
+		libdirs { path.join(_libDir, "lib/linux32_ppc_gcc") }
 		buildoptions {
 			"-Wunused-value",
 			"-Wundef",
